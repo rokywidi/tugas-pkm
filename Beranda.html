@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Presensi Siswa - Pencarian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                blue: "#28187E",
+                sky: "#bddbe6",
+              },
+            },
+            boxShadow: {
+              card: "0 10px 26px rgba(0,0,0,0.1)",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="antialiased text-slate-900 relative">
+    <!-- ================= BACKGROUND ================= -->
+    <div class="fixed inset-0 -z-10">
+      <div class="absolute top-0 left-0 w-full h-[60%] bg-brand-sky"></div>
+      <div class="absolute bottom-0 left-0 w-full h-[50%] bg-white rounded-t-[80px]"></div>
+    </div>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="flex justify-between items-center py-3 px-4 sm:px-6 md:px-8 bg-transparent fixed top-0 left-0 w-full z-50 backdrop-blur-md">
+      <div class="flex items-center gap-2">
+        <img src="asset/1646400107987-removebg-preview copy.png" alt="Logo" class="w-10 h-auto sm:w-12 md:w-14" />
+        <span class="font-bold text-base sm:text-lg md:text-xl text-[#28187E]">SMK PUSTEK SERPONG</span>
+      </div>
+
+      <!-- Tombol Masuk tetap tampil di semua layar -->
+      <div class="flex items-center">
+        <a href="login.html" class="flex items-center gap-2 text-[#28187E] bg-white border border-[#28187E] px-3 sm:px-4 py-2 rounded-lg font-bold hover:bg-[#28187E] hover:text-white transition-all text-sm sm:text-base">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 15c2.485 0 4.784.605 6.879 1.804M12 12a5 5 0 100-10 5 5 0 000 10z" />
+          </svg>
+          Masuk
+        </a>
+      </div>
+    </nav>
+
+    <!-- ================= CONTENT ================= -->
+    <main class="pt-28 px-3 sm:px-6 md:px-10">
+      <div class="max-w-[98%] mx-auto">
+        <h1 class="text-base sm:text-lg md:text-xl font-bold text-slate-900 mb-1 text-center sm:text-left">Rekap Presensi Siswa/i SMK Pustek Serpong</h1>
+        <p class="text-sm sm:text-base font-semibold text-gray-700 mb-6 text-center sm:text-left">
+          Tahun Ajaran
+          <span class="text-base sm:text-lg font-bold">... /... /...</span>
+        </p>
+
+        <!-- Dropdown & Search -->
+        <div class="flex flex-wrap justify-center sm:justify-start items-center gap-3 mb-8">
+          <!-- Dropdown Kelas -->
+          <div class="relative">
+            <button id="kelasBtn" class="border border-black text-[#28187E] font-bold py-2 px-4 pr-8 rounded-lg shadow-card bg-white flex items-center gap-2 hover:bg-blue-50 focus:outline-none">
+              <span id="kelasText">Kelas</span>
+              <span class="text-gray-500">▾</span>
+            </button>
+            <div id="kelasMenu" class="hidden absolute mt-2 bg-white shadow-lg rounded-md border border-blue-200 w-40 sm:w-full z-20">
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('10 TKJ 1')">10 TKJ 1</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('10 TKJ 2')">10 TKJ 2</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('10 MM 1')">10 MM 1</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('10 MM 2')">10 MM 2</div>
+            </div>
+          </div>
+
+          <!-- Dropdown Bulan -->
+          <div class="relative">
+            <button id="bulanBtn" class="border border-black text-[#28187E] font-bold py-2 px-4 pr-8 rounded-lg shadow-card bg-white flex items-center gap-2 hover:bg-blue-50 focus:outline-none">
+              <span id="bulanText">Bulan</span>
+              <span class="text-gray-500">▾</span>
+            </button>
+            <div id="bulanMenu" class="hidden absolute mt-2 bg-white shadow-lg rounded-md border border-blue-200 w-40 sm:w-full z-20">
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectBulan('Januari')">Januari</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectBulan('Februari')">Februari</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectBulan('Maret')">Maret</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectBulan('April')">April</div>
+            </div>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="relative w-36 sm:w-60">
+            <input type="text" placeholder="Cari..." class="border border-black rounded-lg py-2 pl-10 pr-10 shadow-card w-full focus:outline-none" id="searchInput" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18.5a7.5 7.5 0 006.15-1.85z" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- ============ TABEL PRESENSI ============ -->
+        <div class="bg-white shadow-card border border-blue-300 rounded-2xl p-4 sm:p-6 w-full overflow-x-auto">
+          <table class="min-w-[800px] sm:min-w-full text-sm text-gray-700 border-collapse text-center">
+            <thead>
+              <tr class="border-b border-gray-300 text-[#1e3a8a] font-semibold text-center">
+                <th class="py-2 px-2 text-left">Nama Siswa</th>
+                <th class="py-2 px-2 text-left">NISN</th>
+                <th class="py-2 px-2">Kelas</th>
+                <script>
+                  for (let i = 1; i <= 30; i++) {
+                    document.write(`<th class='py-2 px-1 hidden sm:table-cell'>${i}</th>`);
+                  }
+                </script>
+              </tr>
+            </thead>
+
+            <tbody class="text-gray-700 text-center">
+              <tr class="border-b border-gray-200 hover:bg-gray-50">
+                <td class="py-2 px-2 text-left">Naila Faiza</td>
+                <td class="py-2 px-2 text-left">-</td>
+                <td class="py-2 px-2 text-center">10 TKJ 1</td>
+              </tr>
+              <tr class="border-b border-gray-200 hover:bg-gray-50">
+                <td class="py-2 px-2 text-left">Rival Adista</td>
+                <td class="py-2 px-2 text-left">-</td>
+                <td class="py-2 px-2 text-center">10 TKJ 1</td>
+              </tr>
+              <tr class="border-b border-gray-200 hover:bg-gray-50">
+                <td class="py-2 px-2 text-left">M. Arya</td>
+                <td class="py-2 px-2 text-left">-</td>
+                <td class="py-2 px-2 text-center">10 TKJ 1</td>
+              </tr>
+              <tr class="hover:bg-gray-50">
+                <td class="py-2 px-2 text-left">Wildan Taufik</td>
+                <td class="py-2 px-2 text-left">-</td>
+                <td class="py-2 px-2 text-center">10 TKJ 1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- ================= SCRIPT ================= -->
+    <script>
+      const kelasBtn = document.getElementById("kelasBtn");
+      const kelasMenu = document.getElementById("kelasMenu");
+      const bulanBtn = document.getElementById("bulanBtn");
+      const bulanMenu = document.getElementById("bulanMenu");
+
+      // Hanya satu dropdown terbuka sekaligus
+      kelasBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        bulanMenu.classList.add("hidden");
+        kelasMenu.classList.toggle("hidden");
+      });
+
+      bulanBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        kelasMenu.classList.add("hidden");
+        bulanMenu.classList.toggle("hidden");
+      });
+
+      // Pilih item
+      function selectKelas(text) {
+        document.getElementById("kelasText").textContent = text;
+        kelasMenu.classList.add("hidden");
+      }
+
+      function selectBulan(text) {
+        document.getElementById("bulanText").textContent = text;
+        bulanMenu.classList.add("hidden");
+      }
+
+      // Klik di luar nutup semua dropdown
+      document.addEventListener("click", () => {
+        kelasMenu.classList.add("hidden");
+        bulanMenu.classList.add("hidden");
+      });
+    </script>
+  </body>
+</html>

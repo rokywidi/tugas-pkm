@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Show Minggu Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                blue: "#28187E",
+                sky: "#bddbe6",
+              },
+            },
+            boxShadow: {
+              card: "0 10px 26px rgba(0,0,0,0.1)",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="antialiased text-slate-900 relative">
+    <!-- ================= BACKGROUND ================= -->
+    <div class="fixed inset-0 -z-10">
+      <div class="absolute top-0 left-0 w-full h-[60%] bg-brand-sky"></div>
+      <div class="absolute bottom-0 left-0 w-full h-[50%] bg-white rounded-t-[80px]"></div>
+    </div>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="flex justify-between items-center py-3 px-4 sm:px-6 md:px-8 bg-transparent fixed top-0 left-0 w-full z-50">
+      <div class="flex items-center gap-2">
+        <img src="asset/1646400107987-removebg-preview copy.png" alt="Logo" class="w-12 h-auto sm:w-14 md:w-16" />
+        <span class="font-bold text-base sm:text-lg md:text-xl text-[#28187E]">SMK PUSTEK SERPONG</span>
+      </div>
+
+      <!-- Tombol hamburger (mobile) -->
+      <button id="menuToggle" class="md:hidden text-[#28187E] text-3xl font-bold focus:outline-none">☰</button>
+
+      <!-- Menu utama -->
+      <div
+        id="menu"
+        class="hidden flex-col md:flex md:flex-row md:items-center md:gap-8 font-semibold text-indigo-800 md:bg-transparent bg-white absolute md:static right-4 top-16 md:top-auto p-4 md:p-0 rounded-xl md:shadow-none shadow-md transition-all duration-300 w-44 md:w-auto space-y-2 md:space-y-0"
+      >
+        <!-- Dropdown Rekap Presensi -->
+        <div class="relative w-full md:w-auto">
+          <button id="rekapBtn" class="hover:text-[#28187E] flex items-center gap-1 focus:outline-none font-bold w-full md:w-auto">Rekap Presensi <span>▾</span></button>
+          <div id="rekapMenu" class="hidden absolute bg-white shadow-md rounded-md mt-2 min-w-[160px]">
+            <a href="bulan_admin.html" class="block px-4 py-2 text-[#28187E] font-bold hover:bg-slate-100">Perbulanan</a>
+            <a href="mingguan_admin.html" class="block px-4 py-2 text-[#28187E] font-bold hover:bg-slate-100">Perminggu</a>
+          </div>
+        </div>
+
+        <a href="#" class="hover:text-[#28187E] font-bold block md:inline-block">Presensi</a>
+        <a href="#" class="hover:text-[#28187E] font-bold block md:inline-block">Keluar</a>
+      </div>
+    </nav>
+
+    <!-- ================= CONTENT ================= -->
+    <main class="pt-28 px-3 sm:px-6 md:px-10">
+      <div class="max-w-[98%] mx-auto">
+        <h1 class="text-base sm:text-lg md:text-xl font-bold text-slate-900 mb-1">Rekap Presensi Siswa/i SMK Pustek Serpong (Hari)</h1>
+        <p class="text-sm sm:text-base font-semibold text-gray-700 mb-6">Tahun Ajaran <span class="font-bold">... /... /...</span></p>
+
+        <!-- Dropdown Minggu dan Tombol Cetak -->
+        <div class="flex flex-wrap items-center gap-3 mb-6">
+          <div class="relative">
+            <button id="kelasBtn" class="border border-black text-[#28187E] font-bold py-2 px-4 pr-8 rounded-lg shadow-card bg-white flex items-center gap-2 hover:bg-blue-50 focus:outline-none">
+              <span id="kelasText">Minggu ke-</span>
+              <span class="text-gray-500">▾</span>
+            </button>
+
+            <div id="kelasMenu" class="hidden absolute mt-2 bg-white shadow-lg rounded-md border border-blue-200 w-full z-20">
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('1')">1</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('2')">2</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('3')">3</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('4')">4</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('5')">5</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('6')">6</div>
+            </div>
+          </div>
+
+          <button class="bg-[#32CD32] text-black font-semibold px-5 py-2 rounded-md shadow hover:bg-[#16a34a] transition">Cetak</button>
+        </div>
+
+        <!-- ================= TABEL PRESENSI ================= -->
+        <div class="bg-white shadow-card border border-blue-300 rounded-xl p-4 sm:p-6 w-full overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[900px] text-sm text-gray-700">
+            <thead class="border-b border-gray-400 text-[#28187E]">
+              <tr>
+                <th class="py-2 px-3 font-bold">Hari</th>
+                <th class="py-2 px-3 font-bold">Tanggal</th>
+                <th class="py-2 px-3 font-bold">Status</th>
+                <th class="py-2 px-3 font-bold">Keterangan</th>
+                <th class="py-2 px-3 font-bold">Waktu Kehadiran</th>
+                <th class="py-2 px-3 font-bold text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              <tr class="hover:bg-blue-50 transition">
+                <td class="py-2 px-3">Senin</td>
+                <td class="py-2 px-3">07 Oktober 2025</td>
+                <td class="py-2 px-3 text-green-600 font-semibold">Hadir</td>
+                <td class="py-2 px-3">-</td>
+                <td class="py-2 px-3">07.00 WIB</td>
+                <td class="py-2 px-3 text-center">
+                  <a href="edit_minggu_admin.html" class="text-blue-600 font-semibold hover:underline hover:text-blue-800 transition">Edit</a>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50 transition">
+                <td class="py-2 px-3">Selasa</td>
+                <td class="py-2 px-3">08 Oktober 2025</td>
+                <td class="py-2 px-3 text-green-600 font-semibold">Hadir</td>
+                <td class="py-2 px-3">-</td>
+                <td class="py-2 px-3">08.00 WIB</td>
+                <td class="py-2 px-3 text-center">
+                  <a href="edit_minggu_admin.html" class="text-blue-600 font-semibold hover:underline hover:text-blue-800 transition">Edit</a>
+                </td>
+              </tr>
+              <tr class="hover:bg-blue-50 transition">
+                <td class="py-2 px-3">Rabu</td>
+                <td class="py-2 px-3">09 Oktober 2025</td>
+                <td class="py-2 px-3 text-gray-600 font-semibold">Izin</td>
+                <td class="py-2 px-3">Acara keluarga</td>
+                <td class="py-2 px-3">-</td>
+                <td class="py-2 px-3 text-center">
+                  <a href="edit_minggu_admin.html" class="text-blue-600 font-semibold hover:underline hover:text-blue-800 transition">Edit</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Tombol Simpan -->
+          <div class="mt-4 flex justify-end">
+            <button class="bg-[#32CD32] text-black font-semibold py-2 px-6 rounded-lg shadow-md hover:opacity-90">Simpan</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ================= SCRIPT ================= -->
+    <script>
+      const menuToggle = document.getElementById("menuToggle");
+      const menu = document.getElementById("menu");
+      const rekapBtn = document.getElementById("rekapBtn");
+      const rekapMenu = document.getElementById("rekapMenu");
+
+      const kelasBtn = document.getElementById("kelasBtn");
+      const kelasMenu = document.getElementById("kelasMenu");
+      const kelasText = document.getElementById("kelasText");
+
+      // Toggle menu navbar
+      menuToggle.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+      });
+
+      // Dropdown Rekap Presensi
+      rekapBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        rekapMenu.classList.toggle("hidden");
+      });
+
+      // Dropdown Minggu
+      kelasBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        kelasMenu.classList.toggle("hidden");
+      });
+
+      function selectKelas(value) {
+        kelasText.textContent = "Minggu ke-" + value;
+        kelasMenu.classList.add("hidden");
+      }
+
+      // Klik luar area menutup semua dropdown
+      document.addEventListener("click", () => {
+        rekapMenu.classList.add("hidden");
+        kelasMenu.classList.add("hidden");
+      });
+    </script>
+  </body>
+</html>

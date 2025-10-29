@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rekap Presensi SMK Pustek Serpong</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                blue: "#28187E",
+                sky: "#bddbe6",
+              },
+            },
+            boxShadow: {
+              card: "0 10px 26px rgba(0,0,0,0.1)",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body class="antialiased text-slate-900 relative">
+    <!-- ================= BACKGROUND ================= -->
+    <div class="fixed inset-0 -z-10">
+      <div class="absolute top-0 left-0 w-full h-[60%] bg-brand-sky"></div>
+      <div class="absolute bottom-0 left-0 w-full h-[50%] bg-white rounded-t-[80px]"></div>
+    </div>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="flex justify-between items-center py-3 px-4 sm:px-6 md:px-8 bg-transparent fixed top-0 left-0 w-full z-50">
+      <!-- Logo -->
+      <div class="flex items-center gap-2">
+        <img src="asset/1646400107987-removebg-preview.png" alt="Logo" class="w-12 h-auto sm:w-14 md:w-16" />
+        <span class="font-bold text-base sm:text-lg md:text-xl text-[#28187E]">SMK PUSTEK SERPONG</span>
+      </div>
+
+      <!-- Tombol hamburger (mobile) -->
+      <button id="menuToggle" class="md:hidden text-[#28187E] text-3xl font-bold focus:outline-none">☰</button>
+
+      <!-- Menu utama -->
+      <div
+        id="menu"
+        class="hidden md:flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-8 font-semibold text-indigo-800 md:bg-transparent bg-white md:static absolute right-4 top-16 md:top-auto p-4 md:p-0 rounded-xl md:shadow-none shadow-md transition-all duration-300 w-48 md:w-auto"
+      >
+        <!-- Dropdown Rekap Presensi -->
+        <div class="relative w-full md:w-auto">
+          <button id="rekapBtn" class="hover:text-[#28187E] flex items-center justify-between w-full md:w-auto gap-1 font-bold focus:outline-none">
+            Rekap Presensi
+            <span>▾</span>
+          </button>
+          <div id="rekapMenu" class="hidden absolute bg-white shadow-md rounded-md mt-2 min-w-[160px] z-20">
+            <a href="mingguan_admin.html" class="block px-4 py-2 text-[#28187E] font-bold hover:bg-slate-100">Perminggu</a>
+          </div>
+        </div>
+
+        <!-- Link lain (Presensi dan Keluar) -->
+        <a href="presensi.html" class="hover:text-[#28187E] font-bold w-full md:w-auto block md:inline-block">Presensi</a>
+        <a href="index.html" class="hover:text-[#28187E] font-bold w-full md:w-auto block md:inline-block">Keluar</a>
+      </div>
+    </nav>
+
+    <!-- ================= CONTENT ================= -->
+    <main class="pt-28 px-3 sm:px-6 md:px-10">
+      <div class="max-w-[98%] mx-auto">
+        <h1 class="text-base sm:text-lg md:text-xl font-bold text-slate-900 mb-1">Rekap Presensi Siswa/i SMK Pustek Serpong</h1>
+        <p class="text-sm sm:text-base font-semibold text-gray-700 mb-6">
+          Tahun Ajaran
+          <span class="text-base sm:text-lg font-bold">... /... /...</span>
+        </p>
+
+        <!-- Dropdown, Search & Cetak -->
+        <div class="flex flex-wrap items-center gap-3 mb-8">
+          <!-- Dropdown Kelas -->
+          <div class="relative">
+            <button id="kelasBtn" class="border border-black text-[#28187E] font-bold py-2 px-4 pr-8 rounded-lg shadow-card bg-white flex items-center gap-2 hover:bg-blue-50 focus:outline-none">
+              <span id="kelasText">Kelas</span>
+              <span class="text-gray-500">▾</span>
+            </button>
+            <div id="kelasMenu" class="hidden absolute mt-2 bg-white shadow-lg rounded-md border border-blue-200 w-full z-20">
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('X RPL 1')">X RPL 1</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('XI RPL 2')">XI RPL 2</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectKelas('XII RPL 3')">XII RPL 3</div>
+            </div>
+          </div>
+
+          <!-- Dropdown Bulan -->
+          <div class="relative">
+            <button id="bulanBtn" class="border border-black text-[#28187E] font-bold py-2 px-4 pr-8 rounded-lg shadow-card bg-white flex items-center gap-2 hover:bg-blue-50 focus:outline-none">
+              <span id="bulanText">Bulan</span>
+              <span class="text-gray-500">▾</span>
+            </button>
+            <div id="bulanMenu" class="hidden absolute mt-2 bg-white shadow-lg rounded-md border border-blue-200 w-full z-20">
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectBulan('Januari')">Januari</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectBulan('Februari')">Februari</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectBulan('Maret')">Maret</div>
+              <div class="px-4 py-2 hover:bg-blue-100 cursor-pointer font-semibold text-[#28187E]" onclick="selectBulan('April')">April</div>
+            </div>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="relative">
+            <input type="text" placeholder="Search..." class="border border-black rounded-lg py-2 pl-10 pr-10 shadow-card w-40 sm:w-48 focus:outline-none" id="searchInput" />
+            <svg id="searchIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2 cursor-pointer hover:text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1010.5 18.5a7.5 7.5 0 006.15-1.85z" />
+            </svg>
+          </div>
+
+          <!-- Tombol Cetak -->
+          <button class="bg-[#32CD32] text-black font-bold py-2 px-6 rounded-lg shadow-card hover:bg-green-600 transition">Cetak</button>
+        </div>
+
+        <!-- Tabel -->
+        <div class="bg-white shadow-card border border-blue-300 rounded-xl p-4 sm:p-6 w-full overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[900px]">
+            <thead class="text-[#28187E]">
+              <tr>
+                <th class="py-3 px-4 font-bold">Nama Siswa</th>
+                <th class="py-3 px-4 font-bold">NISN</th>
+                <th class="py-3 px-4 font-bold">Kelas</th>
+                <th class="py-3 px-4 font-bold text-center">Total Hadir</th>
+                <th class="py-3 px-4 font-bold text-center">Izin</th>
+                <th class="py-3 px-4 font-bold text-center">Sakit</th>
+                <th class="py-3 px-4 font-bold text-center">Alpha</th>
+                <th class="py-3 px-4 font-bold text-center">Persentase(%)</th>
+                <th class="py-3 px-4 font-bold text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody" class="text-gray-700">
+              <tr class="border-t hover:bg-blue-50">
+                <td class="py-2 px-4">Naila Fatira</td>
+                <td class="py-2 px-4">10928928382</td>
+                <td class="py-2 px-4">XII RPL 2</td>
+                <td class="py-2 px-4 text-center">20</td>
+                <td class="py-2 px-4 text-center">2</td>
+                <td class="py-2 px-4 text-center">2</td>
+                <td class="py-2 px-4 text-center">2</td>
+                <td class="py-2 px-4 text-center font-semibold text-green-600">90%</td>
+                <td class="py-2 px-4 text-center">
+                  <a href="show_bulan_admin.html" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold px-3 py-1 rounded-md text-sm">Show</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- ================= SCRIPT ================= -->
+    <script>
+      const menuToggle = document.getElementById("menuToggle");
+      const menu = document.getElementById("menu");
+      const rekapBtn = document.getElementById("rekapBtn");
+      const rekapMenu = document.getElementById("rekapMenu");
+      const kelasBtn = document.getElementById("kelasBtn");
+      const kelasMenu = document.getElementById("kelasMenu");
+      const bulanBtn = document.getElementById("bulanBtn");
+      const bulanMenu = document.getElementById("bulanMenu");
+
+      // buka/tutup menu mobile
+      menuToggle.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+      });
+
+      // fungsi helper
+      function closeAllDropdowns() {
+        rekapMenu.classList.add("hidden");
+        kelasMenu.classList.add("hidden");
+        bulanMenu.classList.add("hidden");
+      }
+
+      // event toggle dropdown
+      rekapBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = !rekapMenu.classList.contains("hidden");
+        closeAllDropdowns();
+        if (!isOpen) rekapMenu.classList.remove("hidden");
+      });
+
+      kelasBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = !kelasMenu.classList.contains("hidden");
+        closeAllDropdowns();
+        if (!isOpen) kelasMenu.classList.remove("hidden");
+      });
+
+      bulanBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = !bulanMenu.classList.contains("hidden");
+        closeAllDropdowns();
+        if (!isOpen) bulanMenu.classList.remove("hidden");
+      });
+
+      // klik di luar area
+      document.addEventListener("click", closeAllDropdowns);
+    </script>
+  </body>
+</html>
